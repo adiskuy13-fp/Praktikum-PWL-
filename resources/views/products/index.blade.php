@@ -1,64 +1,166 @@
-@extends('layouts.app')
 
-@section('title', 'Daftar Product')
+<!DOCTYPE html>
+<html lang="id">
 
-@section('content')
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Daftar Product</h1>
-    <a href="{{ route('product.create') }}"
-       class="px-4 py-2 bg-blue-600 text-white rounded">
-        Add Product
-    </a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAFTAR PRODUCT</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-blue {
+            background-color: #0d6efd;
+        }
+
+        .btn-red {
+            background-color: #dc3545;
+        }
+
+        .btn-green {
+            background-color: #198754;
+        }
+
+        .alert-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .actions form {
+            display: inline-flex;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<div class="header">
+    <h1>DAFTAR PRODUCT</h1>
+
+    <div class="actions">
+        <a href="{{ route('products.create') }}" class="btn btn-blue">
+            ADD PRODUCT
+        </a>
+
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+
+            <button type="submit" class="btn btn-red">
+                LOGOUT
+            </button>
+        </form>
+    </div>
 </div>
 
-@if (session('success'))
-    <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
-        {{ session('success') }}
-    </div>
-@endif
 
-<div class="bg-white rounded shadow overflow-x-auto">
-    <table class="w-full text-sm text-left">
-        <thead class="bg-gray-100">
+    @if (session('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table>
+        <thead>
             <tr>
-                <th class="px-4 py-3">No</th>
-                <th class="px-4 py-3">Name</th>
-                <th class="px-4 py-3">Code</th>
-                <th class="px-4 py-3">Stock</th>
-                <th class="px-4 py-3">Price</th>
-                <th class="px-4 py-3">Action</th>
+                <th>NO</th>
+                <th>PRODUCT NAME</th>
+                <th>CODE</th>
+                <th>STOCK</th>
+                <th>PRICE</th>
+                <th>ACTION</th>
             </tr>
         </thead>
+
         <tbody>
             @forelse ($products as $product)
-                <tr class="border-t">
-                    <td class="px-4 py-3">
-                        {{ $products->firstItem() + $loop->index }}
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->code }}</td>
+                    <td>{{ $product->stock }}</td>
+                    <td>
+                        {{ number_format($product->price, 2, ',', '.') }}
                     </td>
-                    <td class="px-4 py-3">{{ $product->name }}</td>
-                    <td class="px-4 py-3">{{ $product->code }}</td>
-                    <td class="px-4 py-3">{{ $product->stock }}</td>
-                    <td class="px-4 py-3">
-                        Rp {{ number_format($product->price, 0, ',', '.') }}
-                    </td>
-                    <td class="px-4 py-3">
-                        <div class="flex gap-2 flex-wrap">
-                            <a href="{{ route('product.show', $product) }}"
-                               class="px-3 py-1 bg-sky-500 text-white rounded">
-                                View
+                    <td>
+                        <div class="actions">
+                            <a href="{{ route('products.show', $product->id) }}"
+                               class="btn btn-green">
+                                DETAIL
                             </a>
-                            <a href="{{ route('product.edit', $product) }}"
-                               class="px-3 py-1 bg-amber-500 text-white rounded">
-                                Edit
+
+                            <a href="{{ route('products.edit', $product->id) }}"
+                               class="btn btn-blue">
+                                EDIT
                             </a>
-                            <form action="{{ route('product.destroy', $product) }}"
+
+                            <form action="{{ route('products.destroy', $product->id) }}"
                                   method="POST"
-                                  onsubmit="return confirm('Apakah Anda yakin?')">
+                                  onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit"
-                                        class="px-3 py-1 bg-red-600 text-white rounded">
-                                    Delete
+
+                                <button type="submit" class="btn btn-red">
+                                    DELETE
                                 </button>
                             </form>
                         </div>
@@ -66,16 +168,14 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="px-4 py-6 text-center">
-                        Data Empty
+                    <td colspan="6" style="text-align: center;">
+                        Belum ada data produk.
                     </td>
                 </tr>
             @endforelse
         </tbody>
     </table>
-</div>
 
-<div class="mt-4">
-    {{ $products->links() }}
-</div>
-@endsection
+</body>
+
+</html>
