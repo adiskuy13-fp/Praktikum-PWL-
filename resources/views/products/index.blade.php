@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,10 +47,6 @@
             background-color: #dc3545;
         }
 
-        .btn-green {
-            background-color: #198754;
-        }
-
         .alert-success {
             background-color: #d1e7dd;
             color: #0f5132;
@@ -80,7 +75,7 @@
         .actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             white-space: nowrap;
         }
 
@@ -88,30 +83,25 @@
             display: inline-flex;
             margin: 0;
         }
+
+        .actions a,
+        .actions button {
+            display: inline-block;
+            margin: 0;
+        }
     </style>
 </head>
 
 <body>
 
+    <div class="header">
+        <h1>DAFTAR PRODUCT</h1>
 
-<div class="header">
-    <h1>DAFTAR PRODUCT</h1>
-
-    <div class="actions">
-        <a href="{{ route('products.create') }}" class="btn btn-blue">
+        <a href="{{ route('products.create') }}"
+           class="btn btn-blue">
             ADD PRODUCT
         </a>
-
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-
-            <button type="submit" class="btn btn-red">
-                LOGOUT
-            </button>
-        </form>
     </div>
-</div>
-
 
     @if (session('success'))
         <div class="alert-success">
@@ -141,10 +131,12 @@
                     <td>
                         {{ number_format($product->price, 2, ',', '.') }}
                     </td>
+
                     <td>
                         <div class="actions">
-                            <a href="{{ route('products.show', $product->id) }}"
-                               class="btn btn-green">
+
+                            <a href="{{ route('products.store', $product->id) }}"
+                               class="btn btn-blue">
                                 DETAIL
                             </a>
 
@@ -156,6 +148,7 @@
                             <form action="{{ route('products.destroy', $product->id) }}"
                                   method="POST"
                                   onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+
                                 @csrf
                                 @method('DELETE')
 
@@ -163,19 +156,18 @@
                                     DELETE
                                 </button>
                             </form>
+
                         </div>
                     </td>
                 </tr>
+
             @empty
                 <tr>
-                    <td colspan="6" style="text-align: center;">
-                        Belum ada data produk.
-                    </td>
+                    <td colspan="6">Belum ada data produk</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 
 </body>
-
 </html>

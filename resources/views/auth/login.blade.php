@@ -25,7 +25,7 @@
                 <p>{{ $message }}</p> 
             @enderror 
         </div> 
-
+        
         <div>
             <label for="password">Password</label>
             <input

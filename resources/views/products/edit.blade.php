@@ -5,7 +5,7 @@
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Edit Product</h1>
 
-<form action="{{ route('product.update', $product) }}"
+<form action="{{ route('products.update', $product) }}"
       method="POST"
       class="bg-white p-6 rounded shadow space-y-4 max-w-3xl">
     @csrf
@@ -59,7 +59,7 @@
                 class="px-4 py-2 bg-blue-600 text-white rounded">
             Save Changes
         </button>
-        <a href="{{ route('product.index') }}"
+        <a href="{{ route('products.index') }}"
            class="px-4 py-2 bg-gray-200 rounded">
             Back
         </a>

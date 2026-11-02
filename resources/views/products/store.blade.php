@@ -33,6 +33,6 @@
     </div>
 
     <div class="mt-4 flex gap-2">
-        <a href="{{ route('product.index') }}"
+        <a href="{{ route('products.index') }}"
 </body>
 </html>

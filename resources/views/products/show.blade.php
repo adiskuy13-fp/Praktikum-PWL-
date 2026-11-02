@@ -27,9 +27,9 @@
 </div>
 
 <div class="mt-4 flex gap-2">
-    <a href="{{ route('product.index') }}"
+    <a href="{{ route('products.index') }}"
        class="px-4 py-2 bg-gray-200 rounded">Back</a>
-    <a href="{{ route('product.edit', $product) }}"
+    <a href="{{ route('products.edit', $product) }}"
        class="px-4 py-2 bg-amber-500 text-white rounded">Edit Product</a>
 </div>
 @endsection
