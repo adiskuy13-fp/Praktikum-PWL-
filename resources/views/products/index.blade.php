@@ -97,10 +97,23 @@
     <div class="header">
         <h1>DAFTAR PRODUCT</h1>
 
-        <a href="{{ route('products.create') }}"
-           class="btn btn-blue">
-            ADD PRODUCT
-        </a>
+        @can('manage-products') 
+        <div style="display: flex; gap: 10px;">
+            <a href="{{ route('products.create') }}"
+               class="btn btn-blue">
+                ADD PRODUCT
+            </a>
+            @endcan 
+
+            <form action="{{ route('logout') }}"
+                  method="POST"
+                  style="margin: 0;">
+                @csrf
+                <button type="submit" class="btn btn-red">
+                    LOGOUT
+                </button>
+            </form>
+        </div>
     </div>
 
     @if (session('success'))
@@ -135,11 +148,12 @@
                     <td>
                         <div class="actions">
 
-                            <a href="{{ route('products.store', $product->id) }}"
+                            <a href="{{ route('products.show', $product->id) }}"
                                class="btn btn-blue">
                                 DETAIL
                             </a>
 
+                            @can('manage-products') 
                             <a href="{{ route('products.edit', $product->id) }}"
                                class="btn btn-blue">
                                 EDIT
@@ -156,6 +170,7 @@
                                     DELETE
                                 </button>
                             </form>
+                            @endcan 
 
                         </div>
                     </td>
